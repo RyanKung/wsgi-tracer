@@ -1,4 +1,3 @@
-
 from pyinstrument import Profiler
 from pyinstrument.renderers import JSONRenderer
 
