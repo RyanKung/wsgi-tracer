@@ -1,6 +1,7 @@
 from pyinstrument import Profiler
 from pyinstrument.renderers import JSONRenderer
 
+proc_name = 'wsgi_tracer'
 
 def pre_request(worker, req):
     worker.profiler = Profiler()
