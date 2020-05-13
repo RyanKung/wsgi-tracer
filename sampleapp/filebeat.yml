@@ -1,23 +1,12 @@
-output:
-  logstash:
-    enabled: true
-    hosts:
-      - elk:5044
-    timeout: 15
-    # ssl:
-    #   certificate_authorities:
-    #       - /etc/pki/tls/certs/logstash-beats.crt
-
 filebeat:
   inputs:
-    -
+    - type: log
+      enabled: true
       paths:
-        - /var/log/syslog
-        - /var/log/auth.log
-      document_type: syslog
-    -
-      paths:
-        - "/var/log/nginx/*.log"
-      fields_under_root: true
-      fields:
-        type: nginx-access
+        - "/var/log/apps/*.log"
+
+output:
+  elasticsearch:
+    hosts: ["localhost:9200"]
+  # logstash:
+  #   hosts: ["127.0.0.1:5044"]
