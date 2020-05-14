@@ -5,10 +5,14 @@ import time
 
 app = Flask(__name__)
 
+def some_fn():
+    time.sleep(1)
+    return "pong"
+
 @app.route('/')
 def pong():
     time.sleep(1)
-    return "pong"
+    return some_fn()
 
 wsgi_app = app.wsgi_app
 

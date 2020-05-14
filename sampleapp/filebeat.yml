@@ -8,5 +8,11 @@ filebeat:
 output:
   elasticsearch:
     hosts: ["localhost:9200"]
+    index: "APM-%{[agent.version]}-%{+yyyy.MM.dd}"
+    json.keys_under_root: true
   # logstash:
   #   hosts: ["127.0.0.1:5044"]
+
+
+setup.template.name: "APM"
+setup.template.pattern: "APM-*"
