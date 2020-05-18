@@ -18,7 +18,7 @@ D <---------------->E <------------------->
 
 # Protocol
 
-For integration, any devices should add `X-APM-TRACER=<uuid>:<timestamp>` to request HEADERS.
+For integration, any requester should add `X-APM-TRACER=<uuid>:<timestamp>` to request HEADERS.
 
 For Monitor, we provide JSON as LOG output:
 

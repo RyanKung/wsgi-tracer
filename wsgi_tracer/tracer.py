@@ -53,4 +53,5 @@ def post_request(worker, req, environ, resp):
         },
         'stacktrace': json.loads(JSONRenderer().render(session=worker.profiler.last_session))
     }
+    import pdb;pdb.set_trace()
     worker.apm_log.info(record)
