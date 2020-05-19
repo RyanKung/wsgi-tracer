@@ -46,3 +46,9 @@ Add Follow code to your `config.py`
 ```
 from wsgi_tracer import *
 ```
+
+For seperated APM logging file, use follow arg on your gunicorn command
+
+```
+ --env=apm_logfile=apm.log
+```
