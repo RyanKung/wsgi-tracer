@@ -41,6 +41,9 @@ def wsgi_wrapper(worker, wsgi):
     return _
 
 
+def trace_wsgi(worker):
+    worker.wsgi.wsgi_app = wsgi_wrapper(worker, worker.wsgi.wsgi_app)
+
 
 def setup_logger(worker, logfile=None):
     if not logfile:

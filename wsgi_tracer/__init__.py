@@ -1,4 +1,4 @@
-from wsgi_tracer.tracer import wsgi_wrapper, setup_logger
+from wsgi_tracer.tracer import trace_wsgi, setup_logger
 import os
 
 __all__ = ['wsgi_wrapper', 'setup_logger', 'pre_fork', 'pre_request']
@@ -11,4 +11,4 @@ def pre_fork(server, worker):
 
 
 def pre_request(worker, req):
-    worker.wsgi.wsgi_app = wsgi_wrapper(worker, worker.wsgi.wsgi_app)
+    trace_wsgi(worker)
