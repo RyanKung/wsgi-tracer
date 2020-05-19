@@ -6,8 +6,9 @@ import os
 import logging
 from wsgi_tracer.utils import get_tracer_info
 from functools import wraps
+import random
 
-def wsgi_wrapper(worker, wsgi):
+def wsgi_wrapper(worker, sample_rate, sample_filter, show_as_list, wsgi):
 
     if hasattr(wsgi, 'origin'):
         return wsgi
@@ -16,10 +17,17 @@ def wsgi_wrapper(worker, wsgi):
     def _(environ, resp):
         _.origin = wsgi
         start_time = time()
-        profile = Profiler()
-        profile.start()
+        do_sample = not random.randrange(0, sample_rate)
+
+        if do_sample:
+            profile = Profiler()
+            profile.start()
+
         ret = wsgi(environ, resp)
-        profile.stop()
+
+        if do_sample:
+            profile.stop()
+
         record = {
             'versionn': 'v1',
             'proc_name': worker.cfg.proc_name,
@@ -41,8 +49,14 @@ def wsgi_wrapper(worker, wsgi):
     return _
 
 
-def trace_wsgi(worker):
-    worker.wsgi.wsgi_app = wsgi_wrapper(worker, worker.wsgi.wsgi_app)
+def trace_wsgi(worker, sample_rate=1, sample_filter=0.1, show_as_list=True):
+    worker.wsgi.wsgi_app = wsgi_wrapper(
+        worker,
+        sample_rate,
+        sample_filter,
+        show_as_list,
+        worker.wsgi.wsgi_app,
+    )
 
 
 def setup_logger(worker, logfile=None):
