@@ -39,3 +39,10 @@ For Monitor, we provide JSON as LOG output:
 	}
 }
 ```
+
+# Useage
+
+Add Follow code to your `config.py`
+```
+from wsgi_tracer import *
+```

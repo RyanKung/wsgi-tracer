@@ -5,14 +5,22 @@ filebeat:
       paths:
         - "/var/log/apps/*.log"
 
+
+
+setup.template:
+  name: 'apm'
+  pattern: 'APM-*'
+  enabled: true
+
+
+
+setup.template.settings:
+  index.number_of_shards: 1
+
 output:
   elasticsearch:
     hosts: ["localhost:9200"]
-    index: "APM-%{[agent.version]}-%{+yyyy.MM.dd}"
+    index: "APM-%{+yyyy.MM.dd}"
     json.keys_under_root: true
   # logstash:
   #   hosts: ["127.0.0.1:5044"]
-
-
-setup.template.name: "APM"
-setup.template.pattern: "APM-*"
