@@ -4,8 +4,41 @@ from time import time
 import json
 import os
 import logging
-from wsgi_tracer.settings import APMLog
 from wsgi_tracer.utils import get_tracer_info
+from functools import wraps
+
+def wsgi_wrapper(worker, wsgi):
+
+    if hasattr(wsgi, 'origin'):
+        return wsgi
+
+    @wraps(wsgi)
+    def _(environ, resp):
+        _.origin = wsgi
+        start_time = time()
+        profile = Profiler()
+        profile.start()
+        ret = wsgi(environ, resp)
+        profile.stop()
+        record = {
+            'versionn': 'v1',
+            'proc_name': worker.cfg.proc_name,
+            'services': "%s:%s" % (environ['SERVER_NAME'], environ['SERVER_PORT']),
+            'protocol': environ['SERVER_PROTOCOL'],
+            'endpoint': environ['PATH_INFO'],
+            'apitrace': {
+                'trace_id': get_tracer_info(environ),
+                'req_time': start_time,
+                'resp_time': time()
+            },
+            'stacktrace': json.loads(JSONRenderer().render(session=profile.last_session))
+        }
+        if hasattr(worker, 'apm_log'):
+            worker.apm_log.info(record)
+        else:
+            worker.log.info(record)
+        return ret
+    return _
 
 
 
@@ -25,32 +58,3 @@ def setup_logger(worker, logfile=None):
     )
     fh.setFormatter(logfmt)
     worker.apm_log = logger
-
-
-def pre_fork(server, worker):
-    logfile = logfile = os.getenv('apm_logfile', None)
-    setup_logger(worker, logfile)
-
-
-def pre_request(worker, req):
-    worker.profiler = Profiler()
-    worker.profiler.start()
-    worker.start_time = time()
-
-
-def post_request(worker, req, environ, resp):
-    worker.profiler.stop()
-    record = {
-        'versionn': 'v1',
-        'proc_name': worker.cfg.proc_name,
-        'services': "%s:%s" % (environ['SERVER_NAME'], environ['SERVER_PORT']),
-        'protocol': environ['SERVER_PROTOCOL'],
-        'endpoint': environ['PATH_INFO'],
-        'apitrace': {
-            'trace_id': get_tracer_info(environ),
-            'req_time': worker.start_time,
-            'resp_time': time()
-        },
-        'stacktrace': json.loads(JSONRenderer().render(session=worker.profiler.last_session))
-    }
-    worker.apm_log.info(record)
