@@ -7,21 +7,21 @@ wsgi-tracer is a AMP implentation for WSGI(PEP3333) protocol based application b
 
 ## Design:
 
-                        +----------------------------------+
+						+----------------------------------+
 						|                                  |
 						|            WSGI APP              |
 						|  (Flask/Django/AIOHTTP/Etc...)   |
 						+----------------------------------+
                                          |
 						                 |
-                        +----------------------------------+
+						+----------------------------------+
 						|                                  |
 						|             wsgi_tracer:         |
 						|        Callable[wsgi] -> wsgi    |
 						+----------------------------------+
 						                 |
-										 |
-	                    +-----------------------------------+
+						                 |
+						+-----------------------------------+
 						|                                   |
 						|  Gunicorn.worker.wsgi.wsgi_all    |
 						| Callable[Env, resp] -> Iterable   |
