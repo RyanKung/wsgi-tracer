@@ -1,7 +1,7 @@
-from wsgi_tracer.tracer import trace_wsgi, setup_logger
+from wsgi_tracer.tracer import trace_wsgi, setup_logger, tree2list
 import os
 
-__all__ = ['wsgi_wrapper', 'setup_logger', 'pre_fork', 'pre_request']
+__all__ = ['setup_logger', 'pre_fork', 'pre_request']
 
 
 
