@@ -19,7 +19,7 @@ email = 'ryankung@ieee.org'
 setup(
     name='wsgi_tracer',
     description='wsgi_tracer is a APM tracer helper for gunicorn',
-    version='1.0',
+    version='1.1',
     packages=find_packages(here, exclude=['tests']),
     license='GPL',
     author=author,
