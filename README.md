@@ -47,18 +47,19 @@ For Monitor, we provide JSON as LOG output:
 import os
 from functools import partial
 
-from wsgi_tracer.tracer import trace_wsgi, setup_logger, tree2list, filter_time
+from wsgi_tracer.tracer import trace_wsgi, setup_logger, tree2list
+from wsgi_tracer.filter import compose, threshold_time, app_only
 
 proc_name = "sampleapp"
 
 
 
-def pre_fork(server, worker):
+def pre_fork(_, worker):
     logfile = logfile = os.getenv('apm_logfile', None)
     setup_logger(worker, logfile)
 
 
-def pre_request(worker, req):
+def pre_request(worker, _):
     trace_wsgi(
         worker,
         sample_rate=1,
