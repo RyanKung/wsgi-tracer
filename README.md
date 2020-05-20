@@ -12,7 +12,7 @@ wsgi-tracer is a AMP implentation for WSGI(PEP3333) protocol based application b
 						|            WSGI APP              |
 						|  (Flask/Django/AIOHTTP/Etc...)   |
 						+----------------------------------+
-                                         |
+						                 |
 						                 |
 						+----------------------------------+
 						|                                  |
