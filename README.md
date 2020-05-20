@@ -59,7 +59,34 @@ def pre_fork(server, worker):
 
 
 def pre_request(worker, req):
-    trace_wsgi(worker, sample_rate=1, sample_mapper=tree2list, sample_filter=partial(filter_time, threshold=0.5))
+    trace_wsgi(
+        worker,
+        sample_rate=1,
+        sample_mapper=tree2list,
+        sample_filter=compose(
+            [
+                partial(threshold_time, threshold=0.5),
+                partial(app_only, worker=worker)
+            ]
+        )
+    )
+```
+
+# Customize Filter & Mapper
+
+Mapper & Filter should obey follow types:
+
+```python
+Callable[data, args] -> data
+```
+
+Example:
+
+```
+def module_path(data, path):
+    return [d for d in data if path in d['file_path']]
 
 
+def app_only(data, worker):
+    return [d for d in data if worker.wsgi.root_path in d['file_path']]
 ```
