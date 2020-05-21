@@ -15,7 +15,10 @@ def profile_fn(fn, sample_filter=lambda x: x, sample_mapper=lambda x: x):
     profile.start()
     ret = fn()
     profile.stop()
-    sample_data = json.loads(JSONRenderer().render(session=profile.last_session))
+    try:
+        sample_data = json.loads(JSONRenderer().render(session=profile.last_session))
+    except AssertionError as e:
+        return ret, {}
     sample_data['root_frame'] = sample_filter(sample_mapper(sample_data['root_frame']))
     return ret, sample_data
 
