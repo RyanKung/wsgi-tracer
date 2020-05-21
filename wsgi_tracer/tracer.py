@@ -78,7 +78,7 @@ def trace_wsgi(worker, sample_rate=1, sample_filter=lambda x: x, sample_mapper=t
         sample_rate,
         sample_filter,
         sample_mapper,
-        worker.wsgi.wsgi_app,
+        worker.wsgi.__call__,
     )
 
 
