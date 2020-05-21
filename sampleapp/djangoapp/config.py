@@ -15,13 +15,5 @@ def pre_fork(_, worker):
 
 def pre_request(worker, _):
     trace_wsgi(
-        worker,
-        sample_rate=1,
-        sample_mapper=tree2list,
-        sample_filter=compose(
-            [
-                partial(threshold_time, threshold=0.5),
-                partial(not_include, path="django")
-            ]
-        )
+        worker
     )
