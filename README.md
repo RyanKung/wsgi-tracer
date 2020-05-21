@@ -5,7 +5,11 @@ wsgi_tracer
 
 wsgi-tracer is a AMP implentation for WSGI(PEP3333) protocol based application by workaround `gunicorn`.
 
-## Design:
+```
+pip install wsgi_tracer
+```
+
+# Design:
 
 						+----------------------------------+
 						|                                  |
