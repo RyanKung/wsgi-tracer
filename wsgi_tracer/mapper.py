@@ -1,4 +1,6 @@
 def tree2list(node, step=0, ret=[]):
+    if not node:
+        return ret
     if len(node['children']) > 0:
         # Recursion Implementation, Safe when children is less than max recursion limit
         for child in node['children']:

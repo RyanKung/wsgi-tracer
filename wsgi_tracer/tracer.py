@@ -38,10 +38,8 @@ def wsgi_wrapper(
         sample_mapper,
         wsgi
 ):
-
-    if hasattr(wsgi, 'origin'):
-        return wsgi
-
+    # if hasattr(wsgi, 'origin'):
+    #     return wsgi
     @wraps(wsgi)
     def _(environ, resp, *args, **kwargs):
         _.origin = wsgi
@@ -73,7 +71,7 @@ def wsgi_wrapper(
 
 
 def trace_wsgi(worker, sample_rate=1, sample_filter=lambda x: x, sample_mapper=tree2list):
-    worker.wsgi.wsgi_app = wsgi_wrapper(
+    worker.wsgi = wsgi_wrapper(
         worker,
         sample_rate,
         sample_filter,
