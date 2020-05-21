@@ -14,7 +14,7 @@ pip install wsgi_tracer
 						+----------------------------------+
 						|                                  |
 						|            WSGI APP              |
-						|  (Flask/Django/AIOHTTP/Etc...)   |
+						|  (Flask/Django/aioHTTP/Etc...)   |
 						+----------------------------------+
 						                 |
 						                 |
