@@ -12,9 +12,8 @@ from wsgi_tracer.mapper import tree2list
 
 def profile_fn(fn, sample_filter=lambda x: x, sample_mapper=lambda x: x):
     profile = Profiler()
-    profile.start()
-    ret = fn()
-    profile.stop()
+    with profile:
+        ret = fn()
     try:
         sample_data = json.loads(JSONRenderer().render(session=profile.last_session))
     except AssertionError as e:
